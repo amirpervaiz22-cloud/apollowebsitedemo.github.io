@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apollo Medical Billing | Enterprise RCM Solutions</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        scroll-behavior: smooth;
+      }
+      .page {
+        display: none;
+      }
+      .page.active {
+        display: block;
+        animation: fadeIn 0.6s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .nav-scrolled {
+        background-color: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+      }
+      .consultant-panel {
+        transform: scale(0.95);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .consultant-panel.open {
+        transform: scale(1);
+        opacity: 1;
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body class="bg-white text-slate-900 antialiased">
+    <!-- Navigation -->
+    <nav
+      id="navbar"
+      class="fixed top-0 left-0 w-full z-20 transition-all duration-500 py-6 md:py-8"
+    >
+      <div class="container mx-auto px-6 flex justify-between items-center">
+        <div
+          class="flex items-center gap-3 cursor-pointer group"
+          onclick="navigateTo('home')"
+        >
+          <div
+            class="w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:rotate-12 transition-transform duration-300"
+          >
+            <img class="rounded-full" src="./logo apollo.png" alt="Logo" />
+          </div>
+          <div class="flex flex-col text-left">
+            <span class="text-2xl font-black tracking-tight leading-none"
+              >APOLLO</span
+            >
+            <span
+              class="text-xs font-black tracking-[0.4em] text-blue-600 uppercase"
+              >Medical</span
+            >
+          </div>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-10">
+          <button
+            onclick="navigateTo('home')"
+            class="nav-link text-xs font-black uppercase tracking-[0.2em] transition-all relative group py-2 text-blue-700"
+            data-page="home"
+          >
+            Home
+          </button>
+          <button
+            onclick="navigateTo('services')"
+            class="nav-link text-xs font-black uppercase tracking-[0.2em] transition-all relative group py-2 text-slate-700 hover:text-blue-700"
+            data-page="services"
+          >
+            Services
+          </button>
+          <button
+            onclick="navigateTo('specialties')"
+            class="nav-link text-xs font-black uppercase tracking-[0.2em] transition-all relative group py-2 text-slate-700 hover:text-blue-700"
+            data-page="specialties"
+          >
+            Specialties
+          </button>
+          <button
+            onclick="navigateTo('about')"
+            class="nav-link text-xs font-black uppercase tracking-[0.2em] transition-all relative group py-2 text-slate-700 hover:text-blue-700"
+            data-page="about"
+          >
+            About Us
+          </button>
+          <button
+            onclick="navigateTo('contact')"
+            class="nav-link text-xs font-black uppercase tracking-[0.2em] transition-all relative group py-2 text-slate-700 hover:text-blue-700"
+            data-page="contact"
+          >
+            Contact
+          </button>
+          <button
+            onclick="navigateTo('contact')"
+            class="bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold text-sm shadow-md hover:bg-blue-800 transition-all active:scale-95"
+          >
+            Free Consultation
+          </button>
+        </div>
+
+        <button
+          class="lg:hidden p-2 text-slate-900"
+          onclick="toggleMobileMenu()"
+        >
+          <i id="menu-icon" data-lucide="menu" size="32"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div
+        id="mobile-menu"
+        class="hidden lg:hidden absolute top-full left-0 w-full bg-white shadow-2xl border-t border-slate-100 flex flex-col p-10 gap-8 h-[calc(100vh-80px)] overflow-y-auto"
+      >
+        <button
+          onclick="navigateTo('home')"
+          class="text-left text-3xl font-black uppercase tracking-widest text-blue-700"
+        >
+          Home
+        </button>
+        <button
+          onclick="navigateTo('services')"
+          class="text-left text-3xl font-black uppercase tracking-widest text-slate-900"
+        >
+          Services
+        </button>
+        <button
+          onclick="navigateTo('specialties')"
+          class="text-left text-3xl font-black uppercase tracking-widest text-slate-900"
+        >
+          Specialties
+        </button>
+        <button
+          onclick="navigateTo('about')"
+          class="text-left text-3xl font-black uppercase tracking-widest text-slate-900"
+        >
+          About Us
+        </button>
+        <button
+          onclick="navigateTo('contact')"
+          class="text-left text-3xl font-black uppercase tracking-widest text-slate-900"
+        >
+          Contact
+        </button>
+        <div class="mt-auto">
+          <button
+            onclick="navigateTo('contact')"
+            class="w-full py-6 text-xl bg-blue-700 text-white rounded-lg font-bold"
+          >
+            Get Free Consultation
+          </button>
+          <p
+            class="text-center mt-6 text-slate-400 font-bold uppercase tracking-widest text-xs"
+          >
+            Call Us: (800) 555-APOLLO
+          </p>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Pages Container -->
+    <main>
+      <!-- Home Page -->
+      <section id="page-home" class="page active">
+        <!-- Hero -->
+        <section
+          class="relative pt-32 pb-20 md:pt-52 md:pb-40 bg-[#f8fafc] overflow-hidden"
+        >
+          <div
+            class="absolute top-0 right-0 w-1/2 h-full bg-blue-50/40 -skew-x-12 translate-x-1/4 pointer-events-none"
+          ></div>
+          <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+              <div class="lg:w-3/5 text-center lg:text-left">
+                <div
+                  class="inline-flex items-center gap-3 px-5 py-2.5 bg-blue-50 text-blue-700 rounded-full text-xs font-black mb-8 tracking-widest border border-blue-100 uppercase"
+                >
+                  <i
+                    data-lucide="shield-check"
+                    class="text-blue-600 w-4 h-4"
+                  ></i>
+                  HIPAA Compliant • Certified Coding
+                </div>
+                <h1
+                  class="text-4xl md:text-7xl font-black text-slate-900 leading-[1.1] mb-8 tracking-tight"
+                >
+                  End-to-End Billing That
+                  <span class="text-blue-700">Captures Every Dollar</span>
+                </h1>
+                <p
+                  class="text-lg md:text-2xl text-slate-600 mb-10 max-w-2xl leading-relaxed font-medium"
+                >
+                  We eliminate technical debt in your revenue cycle so you can
+                  focus exclusively on patient outcomes. No more denials, just
+                  cash flow.
+                </p>
+                <div
+                  class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start"
+                >
+                  <button
+                    onclick="navigateTo('contact')"
+                    class="bg-blue-700 text-white px-10 py-5 rounded-lg font-semibold text-lg shadow-md hover:bg-blue-800 transition-all active:scale-95"
+                  >
+                    Schedule A Free Consultation
+                  </button>
+                  <button
+                    onclick="navigateTo('services')"
+                    class="bg-white text-blue-700 border border-blue-200 px-10 py-5 rounded-lg font-semibold text-lg shadow-sm hover:bg-blue-50 transition-all"
+                  >
+                    Explore Solutions
+                  </button>
+                </div>
+              </div>
+              <div class="lg:w-2/5 relative">
+                <div
+                  class="relative z-10 rounded-3xl shadow-[0_32px_64px_-12px_rgba(0,0,0,0.14)] overflow-hidden border-[12px] border-white bg-white"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=1000"
+                    alt="Medical Professional"
+                    class="w-full h-auto object-cover"
+                  />
+                </div>
+                <div
+                  class="absolute -bottom-8 -left-8 bg-white p-8 rounded-2xl shadow-2xl z-20 hidden md:block border border-blue-50"
+                >
+                  <div class="flex items-center gap-5 mb-4">
+                    <div class="p-3 bg-green-100 text-green-700 rounded-xl">
+                      <i data-lucide="trending-up" class="w-7 h-7"></i>
+                    </div>
+                    <div>
+                      <p
+                        class="text-xs text-slate-500 font-black uppercase tracking-widest"
+                      >
+                        Avg. Practice Lift
+                      </p>
+                      <p class="text-3xl font-black text-slate-900">+22.4%</p>
+                    </div>
+                  </div>
+                  <div
+                    class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden"
+                  >
+                    <div
+                      class="bg-green-500 h-full w-[88%] rounded-full shadow-[0_0_10px_rgba(34,197,94,0.5)]"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Partners -->
+        <div class="bg-white py-12 border-y border-slate-100">
+          <div class="container mx-auto px-6">
+            <p
+              class="text-center text-slate-400 text-sm font-bold uppercase tracking-[0.2em] mb-8"
+            >
+              Trusted by practices nationwide
+            </p>
+            <div
+              class="flex flex-wrap justify-center gap-12 md:gap-24 opacity-40 grayscale contrast-125"
+            >
+              <span class="text-2xl font-black">HEALTHLINK</span>
+              <span class="text-2xl font-black">ORTHO+</span>
+              <span class="text-2xl font-black">MEDCORE</span>
+              <span class="text-2xl font-black">SURGICARE</span>
+              <span class="text-2xl font-black">PRIORITY HEALTH</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trusted Partner Section -->
+        <section class="py-24 md:py-32 bg-white">
+          <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-20">
+              <div class="lg:w-1/2 relative">
+                <div
+                  class="absolute -top-10 -left-10 w-32 h-32 bg-blue-50 rounded-full -z-10"
+                ></div>
+                <img
+                  src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1000"
+                  alt="Team Discussion"
+                  class="rounded-3xl shadow-xl w-full"
+                />
+              </div>
+              <div class="lg:w-1/2">
+                <div class="mb-16">
+                  <h2
+                    class="text-3xl md:text-5xl font-bold tracking-tight mb-6"
+                  >
+                    Your Enterprise Medical Billing Partner
+                  </h2>
+                  <p class="text-lg md:text-xl text-slate-600 leading-relaxed">
+                    Apollo integrates directly with your EHR to automate coding
+                    accuracy, reduce denial rates, and provide 100% financial
+                    transparency.
+                  </p>
+                  <div class="h-1.5 w-24 bg-blue-600 mt-8 rounded-full"></div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12">
+                  <div class="flex gap-5 group">
+                    <div
+                      class="shrink-0 w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-700"
+                    >
+                      <i data-lucide="shield-check"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-slate-900 text-lg mb-1">
+                        Full Compliance
+                      </h4>
+                      <p class="text-slate-600 leading-relaxed text-sm">
+                        Strict adherence to HIPAA, MACRA, and state regulations.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex gap-5 group">
+                    <div
+                      class="shrink-0 w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-700"
+                    >
+                      <i data-lucide="check-circle-2"></i>
+                    </div>
+                    <div>
+                      <h4 class="font-bold text-slate-900 text-lg mb-1">
+                        98% Clean Claim Rate
+                      </h4>
+                      <p class="text-slate-600 leading-relaxed text-sm">
+                        Multi-pass scrubbing system catches errors instantly.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Inline Consultant -->
+        <section class="py-20 md:py-32 bg-blue-900 relative overflow-hidden">
+          <div class="container mx-auto px-6 relative z-10">
+            <div
+              class="bg-white rounded-2xl shadow-xl overflow-hidden border border-blue-100 flex flex-col md:flex-row max-w-4xl mx-auto my-12 text-left"
+            >
+              <div
+                class="md:w-1/3 bg-blue-100 relative min-h-[300px] flex items-center justify-center overflow-hidden"
+              >
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent z-10"
+                ></div>
+                <img
+                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600"
+                  alt="Sarah Johnson"
+                  class="absolute inset-0 w-full h-full object-cover"
+                />
+                <button
+                  class="z-20 bg-white/95 p-5 rounded-full shadow-2xl hover:scale-110 transition-transform text-blue-700"
+                >
+                  <i data-lucide="play" fill="currentColor"></i>
+                </button>
+              </div>
+              <div class="md:w-2/3 p-8 md:p-12 flex flex-col justify-center">
+                <div
+                  class="mb-4 inline-flex items-center gap-2 px-3 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-full w-fit uppercase tracking-wider"
+                >
+                  <span
+                    class="w-2 h-2 bg-green-500 rounded-full animate-pulse"
+                  ></span>
+                  Personalized Introduction
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 mb-4">
+                  A Human Partnership in a Digital World
+                </h3>
+                <p class="text-lg text-slate-600 mb-8 italic leading-relaxed">
+                  "I've spent a decade helping practices like yours stop leaving
+                  money on the table. At Apollo, we believe your billing team
+                  should be accessible, accountable, and aggressive on your
+                  behalf."
+                </p>
+                <div class="flex items-center gap-4">
+                  <div
+                    class="w-14 h-14 rounded-full bg-blue-700 flex items-center justify-center text-white text-xl font-bold border-2 border-blue-50 shadow-inner"
+                  >
+                    SJ
+                  </div>
+                  <div>
+                    <p class="font-bold text-slate-900 text-lg">
+                      Sarah Johnson
+                    </p>
+                    <p class="text-sm text-slate-500 font-medium">
+                      Business Development Manager, Apollo Medical
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Services Page -->
+      <section id="page-services" class="page">
+        <section
+          class="pt-40 z-10 pb-24 bg-blue-900 text-white relative overflow-hidden text-center"
+        >
+          <div class="container mx-auto px-6 relative z-10">
+            <h1 class="text-4xl md:text-7xl font-black mb-8 tracking-tight">
+              Enterprise Solutions. Personal Touch.
+            </h1>
+            <p
+              class="text-xl md:text-2xl text-blue-100 max-w-4xl mx-auto leading-relaxed"
+            >
+              Our clinical-grade billing framework is built to maximize
+              profitability across the entire care continuum.
+            </p>
+          </div>
+        </section>
+        <section class="py-24 md:py-32 bg-white">
+          <div class="container mx-auto px-6">
+            <div
+              class="flex flex-col lg:flex-row items-center gap-20 mb-40 text-left"
+            >
+              <div class="lg:w-1/2 relative group">
+                <div
+                  class="absolute inset-0 bg-blue-600 rounded-3xl translate-x-4 translate-y-4 -z-10 opacity-10"
+                ></div>
+                <img
+                  src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1200"
+                  alt="Full RCM"
+                  class="rounded-3xl shadow-2xl w-full h-[500px] object-cover"
+                />
+              </div>
+              <div class="lg:w-1/2">
+                <div class="h-1.5 w-20 bg-blue-600 mb-8 rounded-full"></div>
+                <h2
+                  class="text-3xl md:text-5xl font-black text-slate-900 mb-8 tracking-tight leading-tight"
+                >
+                  Full-Stack Revenue Cycle Management
+                </h2>
+                <p class="text-xl text-slate-600 mb-10 leading-relaxed">
+                  The ultimate solution for clinics that want to outsource the
+                  entire financial burden. From registration to final
+                  collection, we act as your off-site billing department.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+                  <div class="flex items-start gap-4">
+                    <div
+                      class="shrink-0 w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center"
+                    >
+                      <i data-lucide="check" size="14"></i>
+                    </div>
+                    <span class="text-slate-800 font-bold"
+                      >End-to-end claim management</span
+                    >
+                  </div>
+                  <div class="flex items-start gap-4">
+                    <div
+                      class="shrink-0 w-6 h-6 bg-green-100 text-green-600 rounded-full flex items-center justify-center"
+                    >
+                      <i data-lucide="check" size="14"></i>
+                    </div>
+                    <span class="text-slate-800 font-bold"
+                      >Dedicated Account Manager</span
+                    >
+                  </div>
+                </div>
+                <button
+                  onclick="navigateTo('contact')"
+                  class="bg-blue-700 text-white px-10 py-5 rounded-lg font-semibold text-lg shadow-xl hover:bg-blue-800 transition-all"
+                >
+                  Inquire About This Service
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Specialties Page -->
+      <section id="page-specialties" class="page">
+        <section class="pt-40 pb-24 bg-slate-50 text-center">
+          <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6">
+              Clinical-Specific Intelligence
+            </h2>
+            <p
+              class="text-lg md:text-xl max-w-3xl mx-auto text-slate-600 leading-relaxed"
+            >
+              Medical billing isn't one-size-fits-all. We have specialized
+              coding teams for over 40 medical specialties.
+            </p>
+            <div
+              class="h-1.5 w-24 bg-blue-600 mt-8 rounded-full mx-auto mb-20"
+            ></div>
+            <div
+              id="specialties-grid"
+              class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+            >
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- About Page -->
+      <section id="page-about" class="page">
+        <section
+          class="pt-40 pb-24 bg-blue-500 text-white relative text-center md:text-left"
+        >
+          <div class="container mx-auto px-6 relative">
+            <h1
+              class="text-4xl md:text-7xl font-black mb-10 tracking-tight leading-[1.1]"
+            >
+              Integrity In <span class="text-blue-400">Revenue.</span>
+            </h1>
+            <p
+              class="text-xl md:text-3xl text-blue-100 max-w-4xl leading-relaxed font-medium"
+            >
+              We founded Apollo to bridge the gap between complex insurance
+              systems and the providers who care for our communities.
+            </p>
+          </div>
+        </section>
+        <section class="py-24 md:py-32 bg-white">
+          <div
+            class="container mx-auto px-6 flex flex-col lg:flex-row gap-24 items-center text-left"
+          >
+            <div class="lg:w-1/2">
+              <div class="h-1.5 w-20 bg-blue-600 mb-10 rounded-full"></div>
+              <h2
+                class="text-3xl md:text-5xl font-black text-slate-900 mb-10 tracking-tight"
+              >
+                Human-Centric Financial Tech.
+              </h2>
+              <p
+                class="text-xl text-slate-600 mb-8 leading-relaxed font-medium"
+              >
+                In a world of automated call centers and impersonal portals,
+                Apollo stands as a beacon of human accountability.
+              </p>
+              <p class="text-xl text-slate-600 mb-12">
+                Based in the US with 100% US-based support, our team consists of
+                senior billing strategists, clinical coders, and data analysts
+                dedicated to one mission: making your practice more profitable.
+              </p>
+              <div class="grid grid-cols-2 gap-10">
+                <div>
+                  <p class="text-5xl font-black text-blue-700 mb-2">15+</p>
+                  <p
+                    class="text-sm font-black text-slate-400 uppercase tracking-widest"
+                  >
+                    Years Experience
+                  </p>
+                </div>
+                <div>
+                  <p class="text-5xl font-black text-blue-700 mb-2">99.2%</p>
+                  <p
+                    class="text-sm font-black text-slate-400 uppercase tracking-widest"
+                  >
+                    Accuracy Rate
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="lg:w-1/2">
+              <img
+                src="https://images.unsplash.com/photo-1521737703345-bc03a9ad3d9d?auto=format&fit=crop&q=80&w=1200"
+                alt="Apollo Team"
+                class="rounded-[40px] shadow-2xl"
+              />
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Contact Page -->
+      <section id="page-contact" class="page">
+        <section class="pt-40 pb-24 bg-slate-50">
+          <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row gap-24 text-left">
+              <div class="lg:w-1/2">
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6">
+                  Speak With A Billing Strategist.
+                </h2>
+                <p
+                  class="text-lg md:text-xl text-slate-600 mb-16 leading-relaxed"
+                >
+                  Ready to transform your practice revenue? Fill out the form or
+                  call our onboarding department directly.
+                </p>
+                <div class="space-y-10">
+                  <div class="flex gap-8 group">
+                    <div
+                      class="w-16 h-16 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center shrink-0"
+                    >
+                      <i data-lucide="phone" size="28"></i>
+                    </div>
+                    <div>
+                      <h4
+                        class="font-black text-slate-900 text-xl mb-1 uppercase tracking-wider"
+                      >
+                        Direct Line
+                      </h4>
+                      <p class="text-2xl font-medium text-slate-600">
+                        (909) 460-8170
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex gap-8 group">
+                    <div
+                      class="w-16 h-16 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center shrink-0"
+                    >
+                      <i data-lucide="mail" size="28"></i>
+                    </div>
+                    <div>
+                      <h4
+                        class="font-black text-slate-900 text-xl mb-1 uppercase tracking-wider"
+                      >
+                        Email Us
+                      </h4>
+                      <p class="text-2xl font-medium text-slate-600">
+                        info@apollomedbilling.com
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lg:w-1/2">
+                <div
+                  class="bg-white p-10 md:p-16 rounded-[40px] shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)] border border-slate-100 relative"
+                >
+                  <div
+                    class="absolute -top-6 left-12 px-6 py-2 bg-blue-700 text-white font-black uppercase text-xs tracking-[0.3em] rounded-full shadow-lg"
+                  >
+                    New Lead Request
+                  </div>
+                  <form
+                    id="contact-form"
+                    class="space-y-8"
+                    onsubmit="handleFormSubmit(event)"
+                  >
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                      <div>
+                        <label
+                          class="block text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3"
+                          >Full Name</label
+                        >
+                        <input
+                          id="name"
+                          required
+                          type="text"
+                          class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl outline-none transition-all font-medium text-slate-800 focus:border-blue-500"
+                          placeholder="John Doe"
+                        />
+                      </div>
+                      <div>
+                        <label
+                          class="block text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3"
+                          >Practice Name</label
+                        >
+                        <input
+                          id="practice"
+                          required
+                          type="text"
+                          class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl outline-none transition-all font-medium text-slate-800 focus:border-blue-500"
+                          placeholder="MedLife Clinic"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        class="block text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-3"
+                        >Work Email</label
+                      >
+                      <input
+                        id="email"
+                        required
+                        type="email"
+                        class="w-full px-5 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl outline-none transition-all font-medium text-slate-800 focus:border-blue-500"
+                        placeholder="john@medlife.com"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      class="w-full py-5 text-xl bg-blue-700 text-white rounded-xl font-black uppercase tracking-widest shadow-2xl hover:bg-blue-800 transition-all"
+                    >
+                      Send Inquiry
+                    </button>
+                  </form>
+                  <div
+                    id="success-message"
+                    class="hidden z-50 text-center py-20"
+                  >
+                    <div
+                      class="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner shadow-green-200"
+                    >
+                      <i data-lucide="check-circle-2" size="48"></i>
+                    </div>
+                    <h3
+                      class="text-3xl font-black text-slate-900 mb-6 tracking-tight"
+                    >
+                      Lead Captured.
+                    </h3>
+                    <p class="text-xl text-slate-600 leading-relaxed mb-10">
+                      Sarah Johnson will contact you within 2 business hours.
+                    </p>
+                    <button
+                      onclick="resetContactForm()"
+                      class="px-12 py-4 bg-blue-700 text-white rounded-lg font-bold hover:bg-blue-800 transition-all"
+                    >
+                      New Inquiry
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer
+      class="bg-slate-950 text-white pt-32 pb-12 overflow-hidden relative text-left"
+    >
+      <div
+        class="absolute top-0 right-0 w-1/3 h-full bg-blue-600 opacity-[0.02] -skew-x-12 translate-x-1/2"
+      ></div>
+      <div class="container mx-auto px-6 relative z-10">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-20 mb-24"
+        >
+          <div>
+            <div
+              class="flex items-center gap-3 mb-10 group"
+              onclick="navigateTo('home')"
+            >
+              <div
+                class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg"
+              >
+                <i data-lucide="activity" size="22"></i>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xl font-black tracking-tight uppercase"
+                  >APOLLO</span
+                >
+                <span
+                  class="text-[10px] font-black tracking-[0.4em] text-blue-500 uppercase"
+                  >Medical</span
+                >
+              </div>
+            </div>
+            <p class="text-slate-400 mb-10 leading-relaxed font-medium text-lg">
+              The nation's premier enterprise-grade revenue cycle management
+              solution.
+            </p>
+            <div class="flex gap-4">
+              <div
+                class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all border border-white/10 cursor-pointer"
+              >
+                <a href="mailto:info@apollomedbilling.com"
+                  ><i data-lucide="mail" size="20"></i
+                ></a>
+              </div>
+              <div
+                class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-blue-600 transition-all border border-white/10 cursor-pointer"
+              >
+                <a href="tel:9094608170"
+                  ><i data-lucide="phone" size="20"></i
+                ></a>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4
+              class="text-sm font-black uppercase tracking-[0.3em] text-blue-500 mb-10"
+            >
+              Solutions
+            </h4>
+            <ul class="space-y-6 text-slate-400 font-bold text-lg">
+              <li
+                class="hover:text-white cursor-pointer"
+                onclick="navigateTo('services')"
+              >
+                Full-Stack RCM
+              </li>
+              <li
+                class="hover:text-white cursor-pointer"
+                onclick="navigateTo('services')"
+              >
+                Denial Recovery
+              </li>
+              <li
+                class="hover:text-white cursor-pointer"
+                onclick="navigateTo('services')"
+              >
+                Credentialing
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4
+              class="text-sm font-black uppercase tracking-[0.3em] text-blue-500 mb-10"
+            >
+              Company
+            </h4>
+            <ul class="space-y-6 text-slate-400 font-bold text-lg">
+              <li
+                class="hover:text-white cursor-pointer"
+                onclick="navigateTo('about')"
+              >
+                Our Mission
+              </li>
+              <li
+                class="hover:text-white cursor-pointer"
+                onclick="navigateTo('specialties')"
+              >
+                Clinical Depth
+              </li>
+              <li
+                class="hover:text-white cursor-pointer"
+                onclick="navigateTo('contact')"
+              >
+                Privacy Policy
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="bg-white/5 p-10 rounded-3xl border border-white/10 backdrop-blur-md"
+        >
+          <h4 class="text-xl font-black mb-6 text-white">
+            Partner With Apollo
+          </h4>
+          <p class="text-slate-400 mb-8 leading-relaxed font-medium">
+            Free complimentary analysis of your current revenue cycle.
+          </p>
+          <button
+            onclick="navigateTo('contact')"
+            class="w-full py-4 text-sm bg-blue-700 text-white rounded-lg font-black uppercase tracking-widest shadow-2xl"
+          >
+            Get Free Audit
+          </button>
+        </div>
+        <div class="pt-12 border-t border-white/5 text-center">
+          <p class="text-slate-500 font-bold text-sm">
+            © 2024 Apollo Medical Billing, LLC. All Rights Reserved. Fully HIPAA
+            Compliant.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Floating Consultant -->
+    <div id="floating-consultant" class="fixed bottom-6 right-6 z-50">
+      <div
+        id="consultant-popover"
+        class="consultant-panel bg-white rounded-2xl shadow-2xl w-80 md:w-96 overflow-hidden border border-blue-100 absolute bottom-20 right-0 text-left"
+      >
+        <div
+          class="p-4 bg-blue-800 text-white flex justify-between items-center"
+        >
+          <div class="flex items-center gap-3">
+            <div class="relative">
+              <img
+                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100"
+                class="w-8 h-8 rounded-full border border-white/20"
+                alt="Sarah"
+              />
+              <div
+                class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-500 border-2 border-blue-800 rounded-full"
+              ></div>
+            </div>
+            <span class="font-semibold text-sm">Sarah Johnson, BDM</span>
+          </div>
+          <button
+            onclick="toggleConsultant(false)"
+            class="hover:bg-white/10 p-1.5 rounded-lg"
+          >
+            <i data-lucide="x" size="18"></i>
+          </button>
+        </div>
+        <div
+          class="relative aspect-video bg-slate-900 flex items-center justify-center group cursor-pointer"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600"
+            class="absolute inset-0 w-full h-full object-cover opacity-70"
+            alt="Consultant Video"
+          />
+          <div class="z-10 bg-white p-4 rounded-full shadow-lg text-blue-700">
+            <i data-lucide="play" fill="currentColor"></i>
+          </div>
+        </div>
+        <div class="p-5">
+          <p class="text-slate-700 text-sm leading-relaxed mb-5">
+            "Hi! I'm Sarah. I personally manage new client onboarding. Click the
+            button below to schedule a 15-minute practice audit."
+          </p>
+          <button
+            onclick="navigateTo('contact')"
+            class="w-full py-2.5 text-sm bg-blue-700 text-white rounded-lg font-bold shadow-md hover:bg-blue-800 transition-all"
+          >
+            Book My Free Audit
+          </button>
+        </div>
+      </div>
+      <button
+        id="consultant-trigger"
+        onclick="toggleConsultant()"
+        class="group flex items-center gap-4 bg-white p-2.5 pr-8 rounded-full shadow-2xl border border-blue-100 transition-all duration-300 hover:-translate-y-1"
+      >
+        <div class="relative">
+          <img
+            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100"
+            class="w-12 h-12 rounded-full object-cover border-2 border-blue-600 shadow-sm"
+            alt="Sarah"
+          />
+          <div
+            class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"
+          ></div>
+        </div>
+        <div class="text-left">
+          <p
+            class="text-[10px] font-black text-blue-700 uppercase tracking-[0.15em] mb-0.5"
+          >
+            Assigned Guide
+          </p>
+          <p class="text-sm font-bold text-slate-800">Chat with Sarah</p>
+        </div>
+      </button>
+    </div>
+
+    <script>
+      // Initialize Icons
+      lucide.createIcons();
+
+      // State Management
+      let isMobileMenuOpen = false;
+      let isConsultantOpen = false;
+
+      // Navigation Logic
+      function navigateTo(pageId) {
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // Update Page Visibility
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        const targetPage = document.getElementById(`page-${pageId}`);
+        if (targetPage) targetPage.classList.add("active");
+
+        // Update Nav Links
+        document.querySelectorAll(".nav-link").forEach((link) => {
+          link.classList.remove("text-blue-700");
+          link.classList.add("text-slate-700");
+          if (link.getAttribute("data-page") === pageId) {
+            link.classList.add("text-blue-700");
+            link.classList.remove("text-slate-700");
+          }
+        });
+
+        // Close Mobile Menu if open
+        if (isMobileMenuOpen) toggleMobileMenu();
+      }
+
+      // Navbar Scroll Handler
+      window.addEventListener("scroll", () => {
+        const nav = document.getElementById("navbar");
+        if (window.scrollY > 50) {
+          nav.classList.add("nav-scrolled");
+        } else {
+          nav.classList.remove("nav-scrolled");
+        }
+      });
+
+      // Mobile Menu Toggle
+      function toggleMobileMenu() {
+        isMobileMenuOpen = !isMobileMenuOpen;
+        const menu = document.getElementById("mobile-menu");
+        const icon = document.getElementById("menu-icon");
+
+        if (isMobileMenuOpen) {
+          menu.classList.remove("hidden");
+          icon.setAttribute("data-lucide", "x");
+        } else {
+          menu.classList.add("hidden");
+          icon.setAttribute("data-lucide", "menu");
+        }
+        lucide.createIcons();
+      }
+
+      // Consultant Toggle
+      function toggleConsultant(forceState) {
+        isConsultantOpen =
+          forceState !== undefined ? forceState : !isConsultantOpen;
+        const panel = document.getElementById("consultant-popover");
+        if (isConsultantOpen) {
+          panel.classList.add("open");
+        } else {
+          panel.classList.remove("open");
+        }
+      }
+
+      // Form Handling
+      async function handleFormSubmit(e) {
+        e.preventDefault();
+        // Get values directly by ID
+        const name = document.getElementById("name").value;
+        const practice = document.getElementById("practice").value;
+        const email = document.getElementById("email").value;
+
+        const payload = { name, practice, email };
+        console.log(payload);
+        
+        try {
+          const response = await fetch("http://localhost:5000/newLead", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          const result = await response.json();
+
+          if (response.ok) {
+            document.getElementById("contact-form").classList.add("hidden");
+            document.getElementById("success-message").classList.remove("hidden");
+            alert("✅ Email sent successfully!");
+            document.getElementById("contact-form").reset();
+          } else {
+            alert(
+              "❌ Something went wrong: " + (result.message || "Unknown error")
+            );
+          }
+        } catch (error) {
+          console.error("Error sending email:", error);
+          alert("❌ Failed to send email. Please try again later.");
+        }
+        
+      }
+
+      function resetContactForm() {
+        document.getElementById("contact-form").classList.remove("hidden");
+        document.getElementById("success-message").classList.add("hidden");
+        document.getElementById("contact-form").reset();
+      }
+
+      // Dynamic Specialties Generation
+      const specialties = [
+        { name: "Primary Care", icon: "user-check" },
+        { name: "Cardiology", icon: "activity" },
+        { name: "Neurology", icon: "zap" },
+        { name: "Ophthalmology", icon: "eye" },
+        { name: "Orthopedics", icon: "check-circle-2" },
+        { name: "Internal Medicine", icon: "file-text" },
+        { name: "Pediatrics", icon: "heart" },
+        { name: "Psychiatry", icon: "users" },
+        { name: "Dermatology", icon: "sparkles" },
+        { name: "Urgent Care", icon: "clock" },
+        { name: "Surgery Center", icon: "clipboard-check" },
+        { name: "DME Providers", icon: "trending-up" },
+      ];
+
+      const grid = document.getElementById("specialties-grid");
+      if (grid) {
+        specialties.forEach((spec) => {
+          const div = document.createElement("div");
+          div.className =
+            "bg-white p-10 rounded-2xl border-2 border-slate-100 hover:border-blue-500 hover:shadow-2xl transition-all text-center group cursor-default duration-300";
+          div.innerHTML = `
+                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 rotate-3 group-hover:rotate-0">
+                        <i data-lucide="${spec.icon}" size="32"></i>
+                    </div>
+                    <h4 class="font-black text-slate-800 text-lg uppercase tracking-wider">${spec.name}</h4>
+                `;
+          grid.appendChild(div);
+        });
+        lucide.createIcons();
+      }
+    </script>
+  </body>
+</html>
